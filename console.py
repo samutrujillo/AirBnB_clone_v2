@@ -127,8 +127,7 @@ class HBNBCommand(cmd.Cmd):
         del arg[0]
         for argument in arg:
             attributes = argument.split("=")
-            if len(attributes) == 2:
-                setattr(new_instance, attributes[0], attributes[1])
+            setattr(new_instance, attributes[0], attributes[1])
         print(new_instance.id)
         storage.save()
 
