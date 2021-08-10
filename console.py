@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """ Console Module """
+from shlex import split
 import cmd
 import sys
 from models.base_model import BaseModel
@@ -115,14 +116,18 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
+        arg = split(args)
+        if not arg:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif arg[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
+        new_instance = HBNBCommand.classes[arg[0]]()
+        del arg[0]
+        for argument in arg:
+            attributes = argument.split("=")
+            setattr(new_instance, attributes[0], attributes[1])
         print(new_instance.id)
         storage.save()
 
