@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """ Console Module """
+from os import getenv
 from shlex import split
 import cmd
 import sys
@@ -129,8 +130,11 @@ class HBNBCommand(cmd.Cmd):
             attributes = argument.split("=")
             setattr(new_instance, attributes[0], attributes[1])
         print(new_instance.id)
-        storage.new(new_instance)
-        storage.save()
+        if getenv("HBNB_TYPE_STORAGE") == "db":
+            storage.new(new_instance)
+            storage.save()
+        else:
+            new_instance.save()
 
     def help_create(self):
         """ Help information for the create method """
