@@ -220,6 +220,15 @@ class TestConsole(unittest.TestCase):
             self.assertEqual(
                 "** no instance found **\n", f.getvalue())
 
+    def test_create(self):
+        ''' Tests for the create command. '''
+        cli = self.create_session()
+        with patch('sys.stdout', new=StringIO()) as Output:
+            output = Output.getvalue().strip()
+            self.assertFalse(cli.onecmd('create'))
+
+        self.assertEqual(MSG_MISSING, output)
+
     @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db", "No apply for db")
     def test_update(self):
         """Test alternate destroy command inpout"""
