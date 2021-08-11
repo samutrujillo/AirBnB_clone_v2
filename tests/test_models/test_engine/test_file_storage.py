@@ -89,6 +89,10 @@ class TestFileStorage(unittest.TestCase):
                 self.assertEqual(line, "{}")
         self.assertIs(self.storage.reload(), None)
 
+    def test_delete(self):
+        """Test for delete
+        """
+
 
 if __name__ == "__main__":
     unittest.main()
