@@ -129,6 +129,7 @@ class HBNBCommand(cmd.Cmd):
             attributes = argument.split("=")
             setattr(new_instance, attributes[0], attributes[1])
         print(new_instance.id)
+        storage.new(new_instance)
         storage.save()
 
     def help_create(self):
