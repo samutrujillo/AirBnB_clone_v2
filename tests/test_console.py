@@ -222,7 +222,7 @@ class TestConsole(unittest.TestCase):
 
     def test_create(self):
         ''' Tests for the create command. '''
-     
+
     @unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db", "No apply for db")
     def test_update(self):
         """Test alternate destroy command inpout"""
@@ -246,6 +246,7 @@ class TestConsole(unittest.TestCase):
             self.consol.onecmd("User.update(" + my_id + ", name)")
             self.assertEqual(
                 "** value missing **\n", f.getvalue())
+
 
 if __name__ == "__main__":
     unittest.main()
