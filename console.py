@@ -116,6 +116,7 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
+        skip = False
         """ Create an object of any class"""
         arg = split(args)
         if not arg:
@@ -128,13 +129,15 @@ class HBNBCommand(cmd.Cmd):
         del arg[0]
         for argument in arg:
             attributes = argument.split("=")
-            setattr(new_instance, attributes[0], attributes[1])
-        print(new_instance.id)
-        if getenv("HBNB_TYPE_STORAGE") == "db":
+            if len(attributes) == 2:
+                setattr(new_instance, attributes[0], attributes[1])
+            else:
+                skip = True
+                break
+        if skip == False:
+            print(new_instance.id)
             storage.new(new_instance)
             storage.save()
-        else:
-            new_instance.save()
 
     def help_create(self):
         """ Help information for the create method """
