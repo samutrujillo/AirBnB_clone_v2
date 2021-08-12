@@ -130,7 +130,8 @@ class HBNBCommand(cmd.Cmd):
         for argument in arg:
             attributes = argument.split("=")
             if len(attributes) == 2:
-                setattr(new_instance, attributes[0], attributes[1])
+                if hasattr(new_instance, attributes[0]):
+                    setattr(new_instance, attributes[0], attributes[1])
             else:
                 skip = True
                 break
