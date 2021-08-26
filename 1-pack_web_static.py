@@ -8,7 +8,7 @@ from datetime import datetime
 def do_pack():
     """This method is to compress all files
     """
-    date_time = date_time.now()
+    date_time = datetime.now()
     compress = "web_static_{}.tgz".format(date_time.strftime("%Y%m%d%H%M%S"))
     local("mkdir versions/")
     try:
