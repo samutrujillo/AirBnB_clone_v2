@@ -10,9 +10,9 @@ def do_pack():
     """
     date_time = datetime.now()
     compress = "web_static_{}.tgz".format(date_time.strftime("%Y%m%d%H%M%S"))
-    local("mkdir versions/")
+    local("mkdir -p versions/")
     try:
-        comp_file = local("tar -cvzf versions/{} web_static".format(compress))
+        comp_file = local("tar -cvzf versions/{} web_static/".format(compress))
         return "versions/{}".format(compress)
     except:
         return None
