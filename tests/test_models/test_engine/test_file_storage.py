@@ -13,10 +13,9 @@ from models.place import Place
 from models.review import Review
 from models.engine.file_storage import FileStorage
 
+
 @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db',
                  "only testing db storage")
-
-
 class TestFileStorage(unittest.TestCase):
     '''this will test the FileStorage'''
 
@@ -77,22 +76,22 @@ class TestFileStorage(unittest.TestCase):
             lines = f.readlines()
         try:
             os.remove(path)
-        except:
-            pass
         self.storage.save()
         with open(path, 'r') as f:
             lines2 = f.readlines()
         self.assertEqual(lines, lines2)
         try:
             os.remove(path)
-        except:
-            pass
         with open(path, "w") as f:
             f.write("{}")
         with open(path, "r") as r:
             for line in r:
                 self.assertEqual(line, "{}")
         self.assertIs(self.storage.reload(), None)
+
+    def test_delete(self):
+        """Test for delete
+        """
 
 
 if __name__ == "__main__":

@@ -16,7 +16,6 @@ from sqlalchemy.orm import sessionmaker
 
 @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') != 'db',
                  "only testing db storage")
-
 class test_DBStorage(unittest.TestCase):
     """ Class to test the file storage method """
     def testState(self):
@@ -53,6 +52,7 @@ class test_DBStorage(unittest.TestCase):
     def teardown(self):
         self.session.close()
         self.session.rollback()
+
 
 if __name__ == "__main__":
     unittest.main()
