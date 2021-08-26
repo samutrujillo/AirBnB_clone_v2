@@ -1,12 +1,11 @@
 #!/usr/bin/python3
-"""
-script that distributes archive to webservers
-"""
+# Fabfile to distribute an archive to a web server.
 import os.path
-from fabric.api import *
-from fabric.operations import run, put, sudo
+from fabric.api import env
+from fabric.api import put
+from fabric.api import run
 
-env.hosts = ['54.157.32.137', '52.55.249.213']
+env.hosts = ["54.157.32.137", "52.55.249.213"]
 
 
 def do_deploy(archive_path):
@@ -19,23 +18,31 @@ def do_deploy(archive_path):
     """
     if os.path.isfile(archive_path) is False:
         return False
+    file = archive_path.split("/")[-1]
+    name = file.split(".")[0]
 
-    try:
-        file = archive_path.split('/')[-1]
-        new_folder = ("/data/web_static/releases/" + file.split(".")[0])
-        # Upload the archive to the /tmp/
-        put(archive_path, "/tmp/")
-        # Uncompress the archive to the folder /data/web_static/releases/
-        run("sudo mkdir -p {}".format(new_folder))
-        run("sudo tar -xzf /tmp/{} -C {}".format(file, new_folder))
-        # Delete the archive from the web server
-        run("sudo rm /tmp/{}".format(file))
-        run("sudo mv {}/web_static/* {}/".format(new_folder, new_folder))
-        run("sudo rm -rf {}/web_static".format(new_folder))
-        # Delete the symbolic link
-        run('sudo rm -rf /data/web_static/current')
-        # Create a new the symbolic link
-        run("sudo ln -s {} /data/web_static/current".format(new_folder))
-        return True
-    except:
+    if put(archive_path, "/tmp/{}".format(file)).failed is True:
         return False
+    if run("rm -rf /data/web_static/releases/{}/".
+           format(name)).failed is True:
+        return False
+    if run("mkdir -p /data/web_static/releases/{}/".
+           format(name)).failed is True:
+        return False
+    if run("tar -xzf /tmp/{} -C /data/web_static/releases/{}/".
+           format(file, name)).failed is True:
+        return False
+    if run("rm /tmp/{}".format(file)).failed is True:
+        return False
+    if run("mv /data/web_static/releases/{}/web_static/* "
+           "/data/web_static/releases/{}/".format(name, name)).failed is True:
+        return False
+    if run("rm -rf /data/web_static/releases/{}/web_static".
+           format(name)).failed is True:
+        return False
+    if run("rm -rf /data/web_static/current").failed is True:
+        return False
+    if run("ln -s /data/web_static/releases/{}/ /data/web_static/current".
+           format(name)).failed is True:
+        return False
+    return True
