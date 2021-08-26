@@ -1,4 +1,3 @@
-
 #!/usr/bin/python3
 # Fabfile to delete out-of-date archives.
 import os
@@ -27,4 +26,3 @@ def do_clean(number=0):
         archives = [a for a in archives if "web_static_" in a]
         [archives.pop() for i in range(number)]
         [run("rm -rf ./{}".format(a)) for a in archives]
-        
