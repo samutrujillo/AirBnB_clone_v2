@@ -9,10 +9,8 @@ echo '
 	<body><h1>Fake body</h1></body>
 </html>' > /data/web_static/releases/test/index.html
 ln -sf /data/web_static/releases/test/ /data/web_static/current
-chown -R ubuntu /data/
-chown -R :ubuntu /data/
+chown -R ubuntu:ubuntu /data/
 found="server_name _;"
 adding="\n\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;\n\t\tautoindex off;\n\t}"
 sed -i "/$found/a\\$adding" /etc/nginx/sites-available/default
 service nginx restart
-exit 0
