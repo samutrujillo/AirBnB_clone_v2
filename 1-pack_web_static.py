@@ -6,15 +6,17 @@ from datetime import datetime
 
 
 def do_pack():
-    compress = "web_static_{}{}{}{}{}{}.tgz".format(datetime.now().year,
-                                                    datetime.now().month,
-                                                    datetime.now().day,
-                                                    datetime.now().hour,
-                                                    datetime.now().minute,
-                                                    datetime.now().second)
-    local("mkdir versions/")
+    '''Function that generates the .tgz archives '''
+    # if versions folder does not exist
+    local('mkdir -p versions/')
+
+    date_time = datetime.now()
+    str_date = date_time.strftime('%Y%m%d%H%M%S')
+    archive_path = 'versions/web_static_' + str_date + '.tgz'
+
+    # Generates the .tgz archive
     try:
-        local("tar -cvzf versions/{} web_static".format(compress))
-        return "versions/{}".format(compress)
+        tar_file = local('tar -cvzf {} web_static/'.format(archive_path))
+        return archive_path
     except:
         return None
